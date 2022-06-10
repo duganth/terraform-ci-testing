@@ -13,7 +13,7 @@ jobs:
     - name: Render terraform docs and push changes back to PR
       uses: terraform-docs/gh-actions@main
       with:
-        find-dir: modules
+        working-dir: modules/s3
         output-file: README.md
         output-method: inject
         config-file: ${{ github.workspace }}/.terraform-docs.yml
