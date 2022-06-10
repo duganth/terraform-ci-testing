@@ -18,7 +18,7 @@ content: |-
   
   ## Usage
   ```hcl
-  {{ include "../../../../../terragrunt.example.hcl" }}
+  {{ include "examples/simple/main.tf" }}
   ```
 
   {{ .Requirements }}
