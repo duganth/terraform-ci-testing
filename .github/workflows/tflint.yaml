@@ -1,0 +1,79 @@
+name: terraform lint
+
+on:
+  push:
+    paths:
+      - 'modules/**.tf'
+
+jobs:
+  create_matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      terraform: ${{ steps.filter.outputs.terraform }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      # Identify if any terraform files were changed
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          list-files: shell
+          base: main
+          filters: |
+            terraform:
+             - added|modified: '**/*.tf'
+      # Create matrix of paths to be linted
+      - name: get parent directory and set matrix
+        if: steps.filter.outputs.terraform == 'true'
+        id: set-matrix
+        run: |
+          tf_config=''
+          for file in ${{ steps.filter.outputs.terraform_files }}:
+          do
+            parent_dir="$(dirname -- "${file}")"
+            echo parent_dir = "${parent_dir}"
+            if [[ "${tf_config}" == *"${parent_dir}\""* ]]; then
+              continue
+            fi
+            if [[ -z "${tf_config}" ]]; then
+              tf_config="{\"tf_config\":\"${parent_dir}\"}"
+            else
+              tf_config="$tf_config, {\"tf_config\":\"${parent_dir}\"}"
+            fi
+          done
+          tf_config="{\"include\":[${tf_config}]}"
+          echo "::set-output name=matrix::${tf_config}"
+
+
+  tf-lint:
+    needs: [create_matrix]
+    if: ${{ needs.create_matrix.outputs.terraform }}
+    runs-on: ubuntu-latest
+    env:
+      TF_IN_AUTOMATION: true
+    defaults:
+      run:
+        working-directory: ${{matrix.tf_config}}
+    strategy:
+      matrix: ${{fromJson(needs.create_matrix.outputs.matrix)}}
+      fail-fast: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Git
+        run: |
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      - name: Install tflint
+        uses: terraform-linters/setup-tflint@v1
+        with:
+          tflint_version: latest
+      - name: Setup tflint
+        working-directory: ${{github.workspace}}
+        run: tflint --init
+      # Run from root to enable Problem matchers
+      - name: Run tflint
+        id: tflint
+        working-directory: ${{github.workspace}}
+        run: tflint -f compact ${{matrix.tf_config}}
