@@ -34,7 +34,7 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_s3_id"></a> [s3\_id](#output\_s3\_id) | s3 bucket id |
+| <a name="output_s3_id"></a> [s3\_id](#output\_s3\_id) | n/a |
 
 ## Resources
 
