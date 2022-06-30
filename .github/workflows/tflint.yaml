@@ -19,7 +19,7 @@ jobs:
         id: filter
         with:
           list-files: shell
-          base: master
+          base: main
           filters: |
             terraform:
              - added|modified: '**/*.tf'
