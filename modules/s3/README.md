@@ -1,7 +1,7 @@
 <!-- BEGIN_TF_DOCS -->
 # Basic S3 Module
 
-This mdule is to create a basic s3 bucket
+This module is to create a basic s3 bucket
 
 ## Usage
 ```hcl
