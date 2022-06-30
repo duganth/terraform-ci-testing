@@ -1,3 +1,4 @@
 output "s3_id" {
-  value = aws_s3_bucket.this.id
+  description = "testing"
+  value       = aws_s3_bucket.this.id
 }
