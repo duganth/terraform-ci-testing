@@ -6,7 +6,8 @@ This module is to create a basic s3 bucket
 ## Usage
 ```hcl
 module "s3" {
-  name = "test name"
+  source = "../../"
+  name   = "test name"
 }
 ```
 
