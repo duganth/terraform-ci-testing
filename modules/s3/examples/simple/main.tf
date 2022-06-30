@@ -1,3 +1,4 @@
 module "s3" {
-  name = "test name"
+  source = "../../"
+  name   = "test name"
 }
