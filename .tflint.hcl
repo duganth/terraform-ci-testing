@@ -1,3 +1,10 @@
+# https://github.com/terraform-linters/tflint/pull/1160
+# plugin "aws" {
+#   enabled = true
+#   version = "0.5.0"
+#   source  = "github.com/terraform-linters/tflint-ruleset-aws"
+# }
+
 rule "terraform_documented_outputs" {
   enabled = true
 }
@@ -11,9 +18,5 @@ rule "terraform_naming_convention" {
 }
 
 rule "terraform_typed_variables" {
-  enabled = true
-}
-
-rule "terraform_unused_declarations" {
   enabled = true
 }
