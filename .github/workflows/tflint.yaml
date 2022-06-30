@@ -1,7 +1,7 @@
 name: terraform lint
 
 on:
-  push:
+  pull_request:
     paths:
       - 'modules/**.tf'
 
