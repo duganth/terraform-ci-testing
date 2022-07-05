@@ -1,4 +1,3 @@
 variable "name" {
-  description = "test"
-  type        = string
+  type = string
 }
