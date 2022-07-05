@@ -2,7 +2,7 @@
  * # Basic S3 Module
  *
  * This module is to create a basic s3 bucket
- * yea
+ * yeet
  *
  */
 
