@@ -77,3 +77,22 @@ jobs:
         id: tflint
         working-directory: ${{github.workspace}}
         run: tflint -f compact ${{matrix.tf_config}}
+     - name: Update label
+        uses: actions-ecosystem/action-add-labels@v1
+        if: failure()
+        with:
+          labels: tflint-fail
+
+  ci-build-check:
+    if: always() && github.event.pull_request
+    runs-on: ubuntu-latest
+    name: CI Build Check
+    needs: 
+      - tf-lint
+      - create_matrix
+    steps:
+      - uses: mheap/github-action-required-labels@v1
+        with:
+          mode: exactly
+          count: 0
+          labels: tflint-fail
