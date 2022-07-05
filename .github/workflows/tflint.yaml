@@ -44,6 +44,13 @@ jobs:
           tf_config="{\"include\":[${tf_config}]}"
           echo "::set-output name=matrix::${tf_config}"
 
+      - name: Clean Label
+        if: success() && github.event.pull_request
+        uses: actions-ecosystem/action-remove-labels@v1
+        with:
+          labels: tflint-fail
+
+
 
   tf-lint:
     needs: [create_matrix]
@@ -81,12 +88,6 @@ jobs:
         uses: actions-ecosystem/action-add-labels@v1
         with:
           labels: tflint-fail
-      - name: Update Label
-        if: success()
-        uses: actions-ecosystem/action-remove-labels@v1
-        with:
-          labels: tflint-fail
-
   ci-build-check:
     if: always() && github.event.pull_request
     runs-on: ubuntu-latest
