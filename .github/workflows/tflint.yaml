@@ -77,9 +77,9 @@ jobs:
         id: tflint
         working-directory: ${{github.workspace}}
         run: tflint -f compact ${{matrix.tf_config}}
-     - name: Update label
-        uses: actions-ecosystem/action-add-labels@v1
+      - name: Update label
         if: failure()
+        uses: actions-ecosystem/action-add-labels@v1
         with:
           labels: tflint-fail
 
