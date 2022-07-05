@@ -2,6 +2,7 @@
 # Basic S3 Module
 
 This module is to create a basic s3 bucket
+yeet
 
 ## Usage
 ```hcl
@@ -29,13 +30,13 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_name"></a> [name](#input\_name) | test | `string` | n/a | yes |
+| <a name="input_name"></a> [name](#input\_name) | n/a | `string` | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| <a name="output_s3_id"></a> [s3\_id](#output\_s3\_id) | n/a |
+| <a name="output_s3_id"></a> [s3\_id](#output\_s3\_id) | testing |
 
 ## Resources
 

@@ -1,7 +1,7 @@
 name: terraform lint
 
 on:
-  push:
+  pull_request:
     paths:
       - 'modules/**.tf'
 
@@ -19,7 +19,6 @@ jobs:
         id: filter
         with:
           list-files: shell
-          base: main
           filters: |
             terraform:
              - added|modified: '**/*.tf'
@@ -44,6 +43,13 @@ jobs:
           done
           tf_config="{\"include\":[${tf_config}]}"
           echo "::set-output name=matrix::${tf_config}"
+
+      - name: Clean Label
+        if: success() && github.event.pull_request
+        uses: actions-ecosystem/action-remove-labels@v1
+        with:
+          labels: tflint-fail
+
 
 
   tf-lint:
@@ -77,3 +83,23 @@ jobs:
         id: tflint
         working-directory: ${{github.workspace}}
         run: tflint -f compact ${{matrix.tf_config}}
+      - name: Update label
+        if: failure()
+        uses: actions-ecosystem/action-add-labels@v1
+        with:
+          labels: tflint-fail
+  ci-build-check:
+    if: always() && github.event.pull_request
+    runs-on: ubuntu-latest
+    name: CI Build Check
+    needs: 
+      - tf-lint
+      - create_matrix
+    steps:
+      - uses: mheap/github-action-required-labels@v2
+        env: 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          mode: exactly
+          count: 0
+          labels: tflint-fail
